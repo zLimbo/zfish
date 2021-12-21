@@ -1,0 +1,79 @@
+Vtable for Base1
+Base1::_ZTV5Base1: 4 entries
+0     (int (*)(...))0
+8     (int (*)(...))(& _ZTI5Base1)
+16    (int (*)(...))Base1::base1_fun1
+24    (int (*)(...))Base1::base1_fun2
+
+Class Base1
+   size=16 align=8
+   base size=16 base align=8
+Base1 (0x0x7fdeb54f6420) 0
+    vptr=((& Base1::_ZTV5Base1) + 16)
+
+Vtable for Base2
+Base2::_ZTV5Base2: 4 entries
+0     (int (*)(...))0
+8     (int (*)(...))(& _ZTI5Base2)
+16    (int (*)(...))Base2::base2_fun1
+24    (int (*)(...))Base2::base2_fun2
+
+Class Base2
+   size=16 align=8
+   base size=16 base align=8
+Base2 (0x0x7fdeb54f6540) 0
+    vptr=((& Base2::_ZTV5Base2) + 16)
+
+Vtable for Derive1
+Derive1::_ZTV7Derive1: 11 entries
+0     (int (*)(...))0
+8     (int (*)(...))(& _ZTI7Derive1)
+16    (int (*)(...))Derive1::base1_fun1
+24    (int (*)(...))Base1::base1_fun2
+32    (int (*)(...))Derive1::base2_fun2
+40    (int (*)(...))Derive1::derive1_fun1
+48    (int (*)(...))Derive1::derive1_fun2
+56    (int (*)(...))-16
+64    (int (*)(...))(& _ZTI7Derive1)
+72    (int (*)(...))Base2::base2_fun1
+80    (int (*)(...))Derive1::_ZThn16_N7Derive110base2_fun2Ev
+
+Class Derive1
+   size=40 align=8
+   base size=40 base align=8
+Derive1 (0x0x7fdeb5508000) 0
+    vptr=((& Derive1::_ZTV7Derive1) + 16)
+  Base1 (0x0x7fdeb54f6660) 0
+      primary-for Derive1 (0x0x7fdeb5508000)
+  Base2 (0x0x7fdeb54f66c0) 16
+      vptr=((& Derive1::_ZTV7Derive1) + 72)
+
+Vtable for Derive2
+Derive2::_ZTV7Derive2: 14 entries
+0     (int (*)(...))0
+8     (int (*)(...))(& _ZTI7Derive2)
+16    (int (*)(...))Derive1::base1_fun1
+24    (int (*)(...))Derive2::base1_fun2
+32    (int (*)(...))Derive1::base2_fun2
+40    (int (*)(...))Derive1::derive1_fun1
+48    (int (*)(...))Derive1::derive1_fun2
+56    (int (*)(...))Derive2::base2_fun1
+64    (int (*)(...))Derive2::derive2_fun1
+72    (int (*)(...))Derive2::derive2_fun2
+80    (int (*)(...))-16
+88    (int (*)(...))(& _ZTI7Derive2)
+96    (int (*)(...))Derive2::_ZThn16_N7Derive210base2_fun1Ev
+104   (int (*)(...))Derive1::_ZThn16_N7Derive110base2_fun2Ev
+
+Class Derive2
+   size=48 align=8
+   base size=48 base align=8
+Derive2 (0x0x7fdeb53a2208) 0
+    vptr=((& Derive2::_ZTV7Derive2) + 16)
+  Derive1 (0x0x7fdeb5508070) 0
+      primary-for Derive2 (0x0x7fdeb53a2208)
+    Base1 (0x0x7fdeb54f68a0) 0
+        primary-for Derive1 (0x0x7fdeb5508070)
+    Base2 (0x0x7fdeb54f6900) 16
+        vptr=((& Derive2::_ZTV7Derive2) + 96)
+

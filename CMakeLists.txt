@@ -12,6 +12,7 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 
 foreach(SRC ${SRC_LIST})
+    message("src: ${SRC}")
     get_filename_component(FILE_NAME ${SRC} NAME_WE)
     add_executable(${FILE_NAME} ${SRC})
     target_link_libraries(${FILE_NAME} gtest pthread)
