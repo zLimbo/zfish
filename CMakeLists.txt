@@ -10,7 +10,6 @@ aux_source_directory(test SRC_LIST)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
-
 foreach(SRC ${SRC_LIST})
     message("src: ${SRC}")
     get_filename_component(FILE_NAME ${SRC} NAME_WE)
