@@ -7,7 +7,6 @@
 #include <iostream>
 #include <mutex>
 #include <queue>
-#include <string_view>
 #include <thread>
 #include <vector>
 
@@ -15,6 +14,8 @@ namespace zfish {
 
 class Util {
 public:
+#if __cplusplus >= 201703L
+#include <string_view>
     static std::vector<std::string_view> split(std::string_view sv,
                                                std::string_view delim = " ") {
         std::vector<std::string_view> res;
@@ -27,6 +28,7 @@ public:
         }
         return res;
     }
+#endif
 };
 
 template <typename T>
@@ -68,6 +70,11 @@ public:
         queue_.pop();
         not_full_.notify_one();
         return x;
+    }
+
+    size_t size() {
+        std::unique_lock<std::mutex> locker(mtx_);
+        return queue_.size();
     }
 
 private:

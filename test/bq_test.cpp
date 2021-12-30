@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "hlib/zfish.h"
+#include "../hlib/zfish.hpp"
 using namespace std;
 
 struct Obj {
@@ -41,6 +41,7 @@ void consumer(zfish::BlockingQueue<Obj>& bq) {
 }
 
 int main() {
+
     zfish::BlockingQueue<Obj> bq(5);
 
     vector<thread> ths;

@@ -4,16 +4,16 @@
 #include <vector>
 
 #include "gtest/gtest.h"
-#include "zfish.h"
+#include "../hlib/zfish.hpp"
 
 using namespace std;
 namespace zf = zfish;
 
 TEST(zfish__Test, split__Test) {
     vector<string_view> ws1{"a", "b", "c"};
-    EXPECT_EQ(ws1, zf::split("a b c"));
-    EXPECT_EQ(ws1, zf::split("a,b,c", ","));
-    EXPECT_EQ(ws1, zf::split(",a,b,c,", ","));
+    EXPECT_EQ(ws1, zf::Util::split("a b c"));
+    EXPECT_EQ(ws1, zf::Util::split("a,b,c", ","));
+    EXPECT_EQ(ws1, zf::Util::split(",a,b,c,", ","));
 }
 
 int main(int argc, char **argv) {
