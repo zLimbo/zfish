@@ -10,7 +10,7 @@
 *.pb.cc
 *.pb.h
 *.prof
-*.so
+*.so*
 *.dylib
 *.rej
 /output
@@ -46,3 +46,4 @@ CTestTestfile.cmake
 /test/recordio_ref.io
 
 *.tar.*
+*.dat

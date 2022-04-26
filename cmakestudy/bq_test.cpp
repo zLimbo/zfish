@@ -41,15 +41,20 @@ void consumer(zfish::BlockingQueue<Obj>& bq) {
 }
 
 int main() {
+    Obj y;
+    {
+        Obj x{1, 2};
+        y = x;
+    }
 
-    zfish::BlockingQueue<Obj> bq(5);
+    // zfish::BlockingQueue<Obj> bq(5);
 
-    vector<thread> ths;
+    // vector<thread> ths;
 
-    ths.emplace_back([&] { producer(bq); });
-    ths.emplace_back([&] { consumer(bq); });
+    // ths.emplace_back([&] { producer(bq); });
+    // ths.emplace_back([&] { consumer(bq); });
 
-    for (auto& th : ths) th.join();
+    // for (auto& th : ths) th.join();
 
     return 0;
 }
