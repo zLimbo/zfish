@@ -1,16 +1,21 @@
 #include <iostream>
-#include <string>
+#include <algorithm>
+#include <functional>
 #include <vector>
-#include <unordered_map>
+#include <queue>
+#include <cstdio>
 
 using namespace std;
 
 int main() {
-    vector<int> v{1, 2, 3, 4, 5};
+    
+    string s;
+    s.push_back(255);
 
-    int n = v.size();
-
-    cout << n << endl;
+    for (int i = 0; i < s.size(); ++i) {
+        int x = (unsigned char)s[i];
+        cout << x << endl;
+    }
 
     return 0;
 }

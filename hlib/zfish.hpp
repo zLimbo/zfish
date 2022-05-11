@@ -20,17 +20,32 @@ public:
 #if __cplusplus >= 201703L
 // #if __has_include(<string_view>)
 #include <string_view>
-    static std::vector<std::string_view> split(std::string_view sv,
-                                               std::string_view delim = " ") {
-        std::vector<std::string_view> res;
-        size_t b = sv.find_first_not_of(delim);
-        size_t e = sv.find_first_of(delim, b);
-        while (b != std::string_view::npos) {
-            res.push_back(sv.substr(b, e - b));
-            b = sv.find_first_not_of(delim, e);
-            e = sv.find_first_of(delim, b);
+    vector<string_view> split(string_view sv, string_view delim) {
+        vector<string_view> words;
+        auto b = sv.find_first_not_of(delims);
+        auto e = sv.find_first_of(delims, b);
+
+        while (b != string_view::npos) {
+            e = min(e, sv.size());
+            words.push_back(sv.substr(b, e - b));
+            b = sv.find_first_not_of(delims, e);
+            e = sv.find_first_of(delims, b);
         }
-        return res;
+        return words;
+    }
+#elif
+    vector<string> split(const string& sv, const string& delims) {
+        vector<string> words;
+        auto b = sv.find_first_not_of(delims);
+        auto e = sv.find_first_of(delims, b);
+
+        while (b != string::npos) {
+            e = min(e, sv.size());
+            words.push_back(sv.substr(b, e - b));
+            b = sv.find_first_not_of(delims, e);
+            e = sv.find_first_of(delims, b);
+        }
+        return words;
     }
 #endif
 };

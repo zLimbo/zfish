@@ -6,6 +6,7 @@
 #include <chrono>
 #include <random>
 #include <getopt.h>
+#include <string_view>
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -26,5 +27,6 @@ int main(int argc, char *argv[]) {
                 cout << char(opt) << " " << opterr << endl;
         }
     }
+
     return 0;
 }
