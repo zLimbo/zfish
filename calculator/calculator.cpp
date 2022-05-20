@@ -108,6 +108,7 @@ double calculation(const string& Formula) {
     }
     return arithNum.top();
 }
+
 int main() {
     string s;
     while (cin >> s) {
