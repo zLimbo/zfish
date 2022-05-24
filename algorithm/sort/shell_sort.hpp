@@ -26,6 +26,28 @@ public:
         }
     }
 };
+
+template <typename T>
+class V2 : public SortFunc<T> {
+public:
+    V2(const string& msg = "shell_sort_v2") : SortFunc<T>(msg) {}
+
+    virtual void sort(T* arr, size_t l, size_t r) override {
+        for (int len = (r - l) / 2; cmp(len > 0); len /= 2) {
+            for (int i = l + len; cmp(i < r); ++i) {
+                T x = arr[i];
+                for (int j = i - len; cmp(j >= 0); j -= len) {
+                    if (cmp(arr[j] <= x)) {
+                        arr[j + len] = x;
+                        break;
+                    }
+                    arr[j + len] = arr[j];
+                }
+            }
+        }
+    }
+};
+
 }  // namespace shell_sort
 }  // namespace zfish
 

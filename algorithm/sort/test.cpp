@@ -41,6 +41,7 @@ int main() {
     sortTest.add<zfish::select_sort::V1<int>>();
 
     sortTest.add<zfish::shell_sort::V1<int>>();
+    sortTest.add<zfish::shell_sort::V2<int>>();
 
     sortTest.test();
 
