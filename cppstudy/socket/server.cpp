@@ -12,23 +12,28 @@
 #include <cassert>
 using namespace std;
 
-int main() {
-    sockaddr_in addr;
-    bzero(&addr, sizeof(addr));
-    addr.sin_family = AF_INET;
-    addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    addr.sin_port = htons(8001);
+int main(int argc, char *argv[]) {
+    assert(argc >= 3);
+    char *ip = argv[1];
+    int port = std::stoi(argv[2]);
+
+    struct sockaddr_in server_addr;
+    bzero(&server_addr, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = inet_addr(ip);
+    server_addr.sin_port = htons(port);
 
     int listenfd = socket(AF_INET, SOCK_STREAM, 0);
     assert(listenfd >= 0);
-    int ret = bind(listenfd, (struct sockaddr *)&addr, sizeof(addr));
+    int ret =
+        bind(listenfd, (struct sockaddr *)&server_addr, sizeof(server_addr));
     assert(ret >= 0);
     ret = listen(listenfd, 20);
     assert(ret >= 0);
 
-    const char *server_addr = inet_ntoa(addr.sin_addr);
-    int server_port = ntohs(addr.sin_port);
-    printf("server %s:%d\n", server_addr, server_port);
+    const char *saddr = inet_ntoa(server_addr.sin_addr);
+    int sport = ntohs(server_addr.sin_port);
+    printf("server %s:%d\n", saddr, sport);
 
     while (true) {
         struct sockaddr_in client_addr;

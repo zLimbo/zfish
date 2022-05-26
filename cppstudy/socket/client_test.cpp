@@ -22,6 +22,16 @@ int main(int argc, char **argv) {
 
     int client_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
+    if (argc >= 5) {
+        struct sockaddr_in client_addr;
+        bzero(&client_addr, sizeof(client_addr));
+        client_addr.sin_family = AF_INET;
+        client_addr.sin_addr.s_addr = inet_addr(argv[3]);
+        client_addr.sin_port = htons(std::stoi(argv[4]));
+        bind(client_fd, (struct sockaddr *)&client_addr, sizeof(client_addr));
+        printf("client addr: %s:%s\n", argv[3], argv[4]);
+    }
+
     printf("connect ...\n");
     int ret = connect(client_fd, (sockaddr *)&server_addr, sizeof(server_addr));
     assert(ret >= 0);

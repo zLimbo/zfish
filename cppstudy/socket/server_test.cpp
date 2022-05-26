@@ -50,6 +50,7 @@ int main(int argc, char **argv) {
             close(client_fd);
             printf("[close] %s:%d\n", inet_ntoa(client_addr.sin_addr),
                    ntohs(client_addr.sin_port));
+            
         });
 
         th.detach();
