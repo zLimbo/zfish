@@ -14,6 +14,8 @@
 
 using namespace std;
 
+const int kBufLen = 256;
+
 int main(int argc, char **argv) {
     assert(argc >= 2);
     struct sockaddr_in server_addr;
@@ -35,24 +37,24 @@ int main(int argc, char **argv) {
     printf("listen | %s:%d\n", inet_ntoa(server_addr.sin_addr),
            ntohs(server_addr.sin_port));
 
-    char xbuf[256], ybuf[256];
-    bzero(xbuf, sizeof(xbuf));
-    bzero(ybuf, sizeof(ybuf));
+    char xbuf[kBufLen], ybuf[kBufLen];
+    bzero(xbuf, kBufLen);
+    bzero(ybuf, kBufLen);
 
-    recvfrom(server_fd, xbuf, 256, 0, (sockaddr *)&xaddr, &xlen);
-    char *xip = inet_ntoa(xaddr.sin_addr);
+    recvfrom(server_fd, xbuf, kBufLen, 0, (sockaddr *)&xaddr, &xlen);
+    const char *xip = string(inet_ntoa(xaddr.sin_addr)).c_str();
     int xport = ntohs(xaddr.sin_port);
     printf("x %s:%d | msg: %s\n", xip, xport, xbuf);
 
-    recvfrom(server_fd, ybuf, 256, 0, (sockaddr *)&yaddr, &ylen);
-    char *yip = inet_ntoa(yaddr.sin_addr);
+    recvfrom(server_fd, ybuf, kBufLen, 0, (sockaddr *)&yaddr, &ylen);
+    const char *yip = string(inet_ntoa(yaddr.sin_addr)).c_str();
     int yport = ntohs(yaddr.sin_port);
     printf("y %s:%d | msg: %s\n", yip, yport, ybuf);
 
-    bzero(xbuf, sizeof(xbuf));
-    bzero(ybuf, sizeof(ybuf));
-    snprintf(xbuf, 256, "%s %d", yip, yport);
-    snprintf(ybuf, 256, "%s %d", xip, xport);
+    bzero(xbuf, kBufLen);
+    bzero(ybuf, kBufLen);
+    snprintf(xbuf, kBufLen, "%s %d", yip, yport);
+    snprintf(ybuf, kBufLen, "%s %d", xip, xport);
 
     printf("send to %s:%d | msg: %s\n", xip, xport, xbuf);
     sendto(server_fd, xbuf, strlen(xbuf), 0, (sockaddr *)&xaddr, sizeof(xaddr));

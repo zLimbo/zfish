@@ -15,6 +15,8 @@
 
 using namespace std;
 
+const kBufLen = 256;
+
 int main(int argc, char **argv) {
     assert(argc >= 5);
     struct sockaddr_in client_addr;
@@ -43,7 +45,7 @@ int main(int argc, char **argv) {
     bzero(&addr, sizeof(addr));
     socklen_t len = sizeof(addr);
     char buf[256];
-    bzero(buf, sizeof(buf));
+    bzero(buf, kBufLen);
     recvfrom(client_fd, buf, 256, 0, (sockaddr *)&addr, &len);
 
     char *ip = inet_ntoa(addr.sin_addr);
@@ -64,7 +66,7 @@ int main(int argc, char **argv) {
     getchar();
     sendto(client_fd, hello, strlen(hello), 0, (const sockaddr *)&peer_addr,
            sizeof(peer_addr));
-    bzero(buf, sizeof(buf));
+    bzero(buf, kBufLen);
     recvfrom(client_fd, buf, 256, 0, (sockaddr *)&peer_addr, &len);
     ip = inet_ntoa(peer_addr.sin_addr);
     port = ntohs(peer_addr.sin_port);
