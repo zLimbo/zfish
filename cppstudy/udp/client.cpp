@@ -28,14 +28,24 @@ int main(int argc, char **argv) {
     server_addr.sin_addr.s_addr = inet_addr(argv[3]);
     server_addr.sin_port = htons(stoi(argv[4]));
 
+    struct sockaddr_in server_addr1;
+    bzero(&server_addr1, sizeof(server_addr1));
+    server_addr1.sin_family = AF_INET;
+    server_addr1.sin_addr.s_addr = inet_addr(argv[3]);
+    server_addr1.sin_port = htons(stoi(argv[4]) + 1);
+
     int client_fd = socket(AF_INET, SOCK_DGRAM, 0);
     bind(client_fd, (sockaddr *)&client_addr, sizeof(client_addr));
 
     const char *buf = "hello";
     printf("%s:%s => %s:%s | msg: %s\n", argv[1], argv[2], argv[3], argv[4],
            buf);
-    sendto(client_fd, buf, strlen(buf), 0, (sockaddr *)&server_addr,
-           sizeof(server_addr));
+    int ret = sendto(client_fd, buf, strlen(buf), 0, (sockaddr *)&server_addr,
+                     sizeof(server_addr));
+    assert(ret != -1);
+    ret = sendto(client_fd, buf, strlen(buf), 0, (sockaddr *)&server_addr1,
+                 sizeof(server_addr1));
+    assert(ret != -1);
 
     printf("listen %s:%s\n", argv[1], argv[2]);
     while (true) {
