@@ -1,0 +1,132 @@
+Vtable for A
+A::_ZTV1A: 4 entries
+0     (int (*)(...))0
+8     (int (*)(...))(& _ZTI1A)
+16    (int (*)(...))A::f0
+24    (int (*)(...))A::bar
+
+Class A
+   size=16 align=8
+   base size=12 base align=8
+A (0x0x7f32685f0420) 0
+    vptr=((& A::_ZTV1A) + 16)
+
+Vtable for B
+B::_ZTV1B: 10 entries
+0     16
+8     (int (*)(...))0
+16    (int (*)(...))(& _ZTI1B)
+24    (int (*)(...))B::f0
+32    0
+40    18446744073709551600
+48    (int (*)(...))-16
+56    (int (*)(...))(& _ZTI1B)
+64    (int (*)(...))B::_ZTv0_n24_N1B2f0Ev
+72    (int (*)(...))A::bar
+
+VTT for B
+B::_ZTT1B: 2 entries
+0     ((& B::_ZTV1B) + 24)
+8     ((& B::_ZTV1B) + 64)
+
+Class B
+   size=32 align=8
+   base size=12 base align=8
+B (0x0x7f3268495208) 0
+    vptridx=0 vptr=((& B::_ZTV1B) + 24)
+A (0x0x7f32685f0600) 16 virtual
+      vptridx=8 vbaseoffset=-24 vptr=((& B::_ZTV1B) + 64)
+
+Vtable for C
+C::_ZTV1C: 10 entries
+0     16
+8     (int (*)(...))0
+16    (int (*)(...))(& _ZTI1C)
+24    (int (*)(...))C::f1
+32    0
+40    0
+48    (int (*)(...))-16
+56    (int (*)(...))(& _ZTI1C)
+64    (int (*)(...))A::f0
+72    (int (*)(...))A::bar
+
+VTT for C
+C::_ZTT1C: 2 entries
+0     ((& C::_ZTV1C) + 24)
+8     ((& C::_ZTV1C) + 64)
+
+Class C
+   size=32 align=8
+   base size=12 base align=8
+C (0x0x7f3268495340) 0
+    vptridx=0 vptr=((& C::_ZTV1C) + 24)
+A (0x0x7f32685f0780) 16 virtual
+      vptridx=8 vbaseoffset=-24 vptr=((& C::_ZTV1C) + 64)
+
+Vtable for D
+D::_ZTV1D: 14 entries
+0     32
+8     (int (*)(...))0
+16    (int (*)(...))(& _ZTI1D)
+24    (int (*)(...))D::f0
+32    16
+40    (int (*)(...))-16
+48    (int (*)(...))(& _ZTI1D)
+56    (int (*)(...))C::f1
+64    0
+72    18446744073709551584
+80    (int (*)(...))-32
+88    (int (*)(...))(& _ZTI1D)
+96    (int (*)(...))D::_ZTv0_n24_N1D2f0Ev
+104   (int (*)(...))A::bar
+
+Construction vtable for B (0x0x7f3268495410 instance) in D
+D::_ZTC1D0_1B: 10 entries
+0     32
+8     (int (*)(...))0
+16    (int (*)(...))(& _ZTI1B)
+24    (int (*)(...))B::f0
+32    0
+40    18446744073709551584
+48    (int (*)(...))-32
+56    (int (*)(...))(& _ZTI1B)
+64    (int (*)(...))B::_ZTv0_n24_N1B2f0Ev
+72    (int (*)(...))A::bar
+
+Construction vtable for C (0x0x7f3268495478 instance) in D
+D::_ZTC1D16_1C: 10 entries
+0     16
+8     (int (*)(...))0
+16    (int (*)(...))(& _ZTI1C)
+24    (int (*)(...))C::f1
+32    0
+40    0
+48    (int (*)(...))-16
+56    (int (*)(...))(& _ZTI1C)
+64    (int (*)(...))A::f0
+72    (int (*)(...))A::bar
+
+VTT for D
+D::_ZTT1D: 7 entries
+0     ((& D::_ZTV1D) + 24)
+8     ((& D::_ZTC1D0_1B) + 24)
+16    ((& D::_ZTC1D0_1B) + 64)
+24    ((& D::_ZTC1D16_1C) + 24)
+32    ((& D::_ZTC1D16_1C) + 64)
+40    ((& D::_ZTV1D) + 96)
+48    ((& D::_ZTV1D) + 56)
+
+Class D
+   size=48 align=8
+   base size=32 base align=8
+D (0x0x7f32686021c0) 0
+    vptridx=0 vptr=((& D::_ZTV1D) + 24)
+B (0x0x7f3268495410) 0
+      primary-for D (0x0x7f32686021c0)
+      subvttidx=8
+A (0x0x7f32685f0840) 32 virtual
+        vptridx=40 vbaseoffset=-24 vptr=((& D::_ZTV1D) + 96)
+C (0x0x7f3268495478) 16
+      subvttidx=24 vptridx=48 vptr=((& D::_ZTV1D) + 56)
+A (0x0x7f32685f0840) alternative-path
+

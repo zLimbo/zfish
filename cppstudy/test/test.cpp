@@ -1,24 +1,41 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <unordered_map>
 #include <chrono>
+#include <cstdint>
+#include <iostream>
 #include <random>
-#include <cmath>
-#include <thread>
+#include <string>
+#include <type_traits>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 using namespace std;
-using namespace std::chrono_literals;
+
+struct TestObj {
+    TestObj() {
+        cout << "TestObj" << endl;
+    }
+    void show() {
+        std::cout << "show " << std::endl;
+    }
+};
+
+template <typename T>
+void show(T& obj) {
+    { std::decay_t<decltype(T().show())>* _ = nullptr; }
+    obj.show();
+}
+
+// template <typename T>
+// void show(T& obj, std::decay_t<decltype(obj++)>* = nullptr) {
+//     obj++;
+//     std::cout << obj << std::endl;
+// }
 
 int main() {
-    default_random_engine e;
-    uniform_real_distribution<double> u(0, 10);
-    for (int i = 0; i < 10; ++i) {
-        cout << u(e) << endl;
-        this_thread::sleep_for(chrono::milliseconds{20});
-    }
+    TestObj obj;
+    show(obj);
 
-    cout << acos(-1) << endl;
-
+    int val = 0;
+    // show(val);
     return 0;
 }

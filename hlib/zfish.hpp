@@ -14,40 +14,37 @@ namespace zfish {
 
 class Util {
 public:
-    // template<typename T, typename Cmp>
-    // void quicksort()
+// #if __cplusplus >= 201703L
+// // #if __has_include(<string_view>)
+// #include <string_view>
+//     vector<string_view> split(string_view sv, string_view delim) {
+//         vector<string_view> words;
+//         auto b = sv.find_first_not_of(delims);
+//         auto e = sv.find_first_of(delims, b);
 
-#if __cplusplus >= 201703L
-// #if __has_include(<string_view>)
-#include <string_view>
-    vector<string_view> split(string_view sv, string_view delim) {
-        vector<string_view> words;
-        auto b = sv.find_first_not_of(delims);
-        auto e = sv.find_first_of(delims, b);
+//         while (b != string_view::npos) {
+//             e = min(e, sv.size());
+//             words.push_back(sv.substr(b, e - b));
+//             b = sv.find_first_not_of(delims, e);
+//             e = sv.find_first_of(delims, b);
+//         }
+//         return words;
+//     }
+// #elif
+//     vector<string> split(const string& sv, const string& delims) {
+//         vector<string> words;
+//         auto b = sv.find_first_not_of(delims);
+//         auto e = sv.find_first_of(delims, b);
 
-        while (b != string_view::npos) {
-            e = min(e, sv.size());
-            words.push_back(sv.substr(b, e - b));
-            b = sv.find_first_not_of(delims, e);
-            e = sv.find_first_of(delims, b);
-        }
-        return words;
-    }
-#elif
-    vector<string> split(const string& sv, const string& delims) {
-        vector<string> words;
-        auto b = sv.find_first_not_of(delims);
-        auto e = sv.find_first_of(delims, b);
-
-        while (b != string::npos) {
-            e = min(e, sv.size());
-            words.push_back(sv.substr(b, e - b));
-            b = sv.find_first_not_of(delims, e);
-            e = sv.find_first_of(delims, b);
-        }
-        return words;
-    }
-#endif
+//         while (b != string::npos) {
+//             e = min(e, sv.size());
+//             words.push_back(sv.substr(b, e - b));
+//             b = sv.find_first_not_of(delims, e);
+//             e = sv.find_first_of(delims, b);
+//         }
+//         return words;
+//     }
+// #endif
 };
 
 template <typename T>
@@ -146,12 +143,15 @@ public:
         return task->get_future();
     }
 
-    ~ThreadPool() { close(); }
+    ~ThreadPool() {
+        close();
+    }
 
     void close() {
         {
             std::lock_guard<std::mutex> locker(mutex_);
-            if (close_) return;
+            if (close_)
+                return;
             close_ = true;
         }
         cond_.notify_all();

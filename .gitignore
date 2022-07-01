@@ -47,3 +47,6 @@ CTestTestfile.cmake
 
 *.tar.*
 *.dat
+
+!.gitignore
+!.clang-format
