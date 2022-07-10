@@ -1,28 +1,40 @@
+#include <initializer_list>
 #include <iostream>
-#include <string>
-#include <vector>
-#include <unordered_map>
+#include <memory>
 
-using namespace std;
-
-class Obj {
+template <typename T>
+class Container {
 public:
-    int* begin() { return arr; }
+    using iterator = T*;
 
-    int* end() { return arr + 10; }
-
-    int arr[10];
-
-    Obj() {
-        for (int i = 0; i < 10; ++i) {
-            arr[i] = i;
+    Container(std::initializer_list<T> lst) {
+        size_ = lst.size();
+        data_ = new T[size_];
+        int idx = 0;
+        for (auto& x : lst) {
+            data_[idx++] = std::move(x);
         }
     }
-};
-int main() {
-    Obj obj;
-    for (auto p : obj) {
-        cout << p << endl;
+
+    iterator begin() {
+        return data_;
     }
+
+    iterator end() {
+        return data_ + size_;
+    }
+
+private:
+    size_t size_;
+    T* data_;
+};
+
+int main() {
+    Container<int> c = {1, 2, 3, 4, 5, 6, 7};
+    for (auto x : c) {
+        std::cout << x << " ";
+    }
+    std::cout << std::endl;
+
     return 0;
 }
