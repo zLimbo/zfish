@@ -1,78 +1,69 @@
-#ifndef __HUFFMAN_ENCODER_COMPRESS_H__
-#define __HUFFMAN_ENCODER_COMPRESS_H__
+#pragma once
 
 #include <string>
 
-constexpr int _CODE_NUM = 256;          // 码数
-constexpr int _ZIP_NAME_LEN = 16;       // 压缩识别符长度
-constexpr int _FILE_NAME_LEN = 256;     //  文件名长度
-constexpr int _FILE_SIZE_LEN = 8;       // 文件大小值长度
-constexpr int _CODE_FREQUENCY_LEN = 8;  //  码频值长度
-constexpr int _ZLZIP_HEAD_LEN = _ZIP_NAME_LEN + _FILE_NAME_LEN +
-                                _FILE_SIZE_LEN  // 头文件信息长度
-                                + _CODE_FREQUENCY_LEN * _CODE_NUM;
-static const char _ZIP_NAME[_ZIP_NAME_LEN] = "zLimbo zLzip";  // 压缩 识别符
+namespace zfish {
 
-// 编码类
-struct Code {
-    unsigned char oldCode;         // 旧码
-    unsigned long long frequency;  // 频率
-    unsigned long long newCode;    // 新码
-    std::string newCodeStr;        // 新码字符串表示 debug
-    int length;                    // 新码长度
+using CodeType = unsigned long long;
+using Byte = unsigned char;
 
-    Code() : oldCode(0), frequency(0), newCode(0), length(0) {}
+// 码数
+constexpr int kCodeNum = 256;
+// 压缩识别符长度
+constexpr int kLenOfZipName = 16;
+// 文件名长度
+constexpr int kLenOfFileName = 256;
+// 文件大小值长度
+constexpr int kLenOfFileSize = 8;
+// 码频值长度
+constexpr int kLenOfCodeFrequency = 8;
+// 头文件信息长度
+constexpr int kLenOfZipHeader = kLenOfZipName + kLenOfFileName +
+                                kLenOfFileSize + kLenOfCodeFrequency * kCodeNum;
+// 压缩 识别符
+static const char kZipName[kLenOfZipName] = "zzzfish";
+
+// 码点
+struct HuffmanCodePoint {
+    Byte old_code;             // 旧码
+    CodeType frequency;        // 频率
+    CodeType new_code;         // 新码
+    int length;                // 新码长度
+    std::string new_code_str;  // 新码字符串表示（debug用）
+
+    HuffmanCodePoint() : old_code(0), frequency(0), new_code(0), length(0) {}
 };
 
 // Huffman 节点
 struct HuffmanTreeNode {
-    unsigned long long weight;  // 权重
-    Code* codePtr;              // 指向码（叶子节点才有指向）
-    HuffmanTreeNode* left;      // 左分支
-    HuffmanTreeNode* right;     // 右分支
+    CodeType weight;          // 权重
+    HuffmanCodePoint* point;  // 指向码点（叶子节点才有指向）
+    HuffmanTreeNode* left;    // 左分支
+    HuffmanTreeNode* right;   // 右分支
 
-    HuffmanTreeNode(unsigned long long w = 0, Code* cp = nullptr,
-                    HuffmanTreeNode* l = nullptr, HuffmanTreeNode* r = nullptr)
-        : weight(w), codePtr(cp), left(l), right(r) {}
+    HuffmanTreeNode(CodeType weight = 0, HuffmanCodePoint* point = nullptr,
+                    HuffmanTreeNode* left = nullptr,
+                    HuffmanTreeNode* right = nullptr)
+        : weight(weight), point(point), left(left), right(right) {}
 };
 
 // 自定义比较器，用于优先队列
-class CmparatorOfHuffmanTreeNode {
-public:
+struct CmparatorOfHuffmanTreeNode {
     bool operator()(HuffmanTreeNode*& lhs, HuffmanTreeNode*& rhs) const {
         return lhs->weight > rhs->weight;
     }
 };
 
 class HuffmanEncoder {
-private:
-    Code _codes[_CODE_NUM];  // 码
-
-    bool _isCompress;  // 是否压缩（用于多次压缩 ）
-
-    std::string _inputFileName;   // 输入文件名
-    std::string _outputFileName;  // 输出文件名
-
-    unsigned long long _inputFileSize;   // 输入文件大小
-    unsigned long long _outputFileSize;  // 输出文件大小
-
-    HuffmanTreeNode* _huffmanTreeRoot;  // Huffman树根节点
-
-private:
-    // 释放节点
-    void freeNode(HuffmanTreeNode* np);
-
 public:
-    // 构造
     HuffmanEncoder(const std::string& inputFileName, bool isCompress = false);
-
-    // 析构
     ~HuffmanEncoder();
 
-    // 无法拷贝构造
-    HuffmanEncoder(const HuffmanEncoder& hec) = delete;
+    // 禁止拷贝构造
+    HuffmanEncoder(const HuffmanEncoder&) = delete;
+    HuffmanEncoder& operator=(const HuffmanEncoder&) = delete;
 
-    // 运行
+    /// 如果是未压缩的，则进行压缩，如果是压缩，则解压缩
     void run();
 
     // 统计频率
@@ -82,14 +73,14 @@ public:
     HuffmanTreeNode* buildHuffmanTree();
 
     // 获得 Huffman 编码
-    void getNewCodes(HuffmanTreeNode* np, unsigned long long newCode,
-                     std::string newCodeStr, int length);
+    void initCodePoint(HuffmanTreeNode* node, CodeType new_code,
+                       std::string new_code_str, int length);
 
     // 压缩文件
     void compress();
 
     // 搜索节点，辅助于解码
-    bool findNode(HuffmanTreeNode*& np, unsigned char inputByte, int& pos);
+    bool findNode(HuffmanTreeNode*& node, Byte inputByte, int& pos);
 
     // 解压缩
     void uncompress();
@@ -102,12 +93,25 @@ public:
 
     // 获取输出文件名
     std::string getOutputFileName() const {
-        return _outputFileName;
+        return output_filename_;
     }
 
     // 判断两个文件是否相等
-    bool compare2File(const std::string& fileName1,
-                      const std::string& fileName2);
+    bool equalFile(const std::string& fileName1, const std::string& fileName2);
+
+private:
+    // 释放节点
+    void freeNode(HuffmanTreeNode* node);
+
+private:
+    HuffmanCodePoint points_[kCodeNum];  // 码
+    HuffmanTreeNode* root_;              // Huffman树根节点
+    bool is_compressed_;  // 是否压缩（用于多次压缩 ）
+
+    std::string input_filename_;   // 输入文件名
+    std::string output_filename_;  // 输出文件名
+    CodeType input_filesize_;      // 输入文件大小
+    CodeType output_filesize_;     // 输出文件大小
 };
 
-#endif
+}  // namespace zfish
