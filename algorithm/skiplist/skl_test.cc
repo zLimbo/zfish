@@ -11,8 +11,8 @@ using namespace zfish;
 int main() {
     zfish::SkipList<int> skl;
 
-    int n = 1000000;
-    int m = 100000;
+    int n = 100000;
+    int m = 10000;
 
     mt19937 eng;
     uniform_int_distribution<int> d(0, n);

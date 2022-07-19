@@ -50,3 +50,4 @@ CTestTestfile.cmake
 
 !.gitignore
 !.clang-format
+!makefile
