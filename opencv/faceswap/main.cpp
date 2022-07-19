@@ -1,10 +1,11 @@
 #include <algorithm>
+#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include <string>
 
-#include "ConvexHull.h"
+#include "convexHull.h"
 
 using namespace cv;
 using namespace std;
@@ -103,10 +104,10 @@ void warpTriangle(Mat &img1, Mat &img2, vector<Point2f> &t1,
 }
 
 int main(int argc, char **argv) {
+    assert(argc >= 3);
     // Read input images
-    string filename1 = "E:\\Temp\\FaceSwap\\hillary_clinton.jpg";
-    // string filename1 = "E:\\Temp\\FaceSwap\\ted_cruz.jpg";
-    string filename2 = "E:\\Temp\\FaceSwap\\donald_trump.jpg";
+    string filename1 = argv[1];
+    string filename2 = argv[2];
 
     Mat img1 = imread(filename1);
     Mat img2 = imread(filename2);
@@ -141,7 +142,7 @@ int main(int argc, char **argv) {
         vector<int> hullIndex2;
         vector<int> hullIndex3;
 
-        convexHull(points2, hullIndex, true, false);
+        // convexHull(points2, hullIndex, true, false);
 
         zLimbo::myConvexHull(points2, hullIndex2);
 
