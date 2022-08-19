@@ -1,40 +1,32 @@
+#include <algorithm>
 #include <iostream>
+#include <iterator>
+#include <memory>
+#include <string>
+#include <thread>
 #include <vector>
-#include <unordered_map>
-#include <queue>
-#include <tuple>
+
 using namespace std;
 
+template <typename T, typename U>
+auto add(T t, U u) {
+    return t + u;
+}
+
 int main() {
-    int t;
-    cin >> t;
-    while (t--) {
-        int n, k;
-        cin >> n >> k;
-        vector<int> presum(n + 1);
-        int res = -1;
-        for (int i = 0; i < n; ++i) {
-            int x;
-            cin >> x;
-            presum[i + 1] = presum[i] + x;
-        }
-        
-        priority_queue<tuple<int, int, int>> pq;
-        for (int i = n; i > 0; --i) {
-            pq.emplace(presum[i] - presum[0], i, 0);
-        }
-        while (!pq.empty()) {
-            int x, y, z;
-            tie(x, y, z) = pq.top(); pq.pop();
-            if (x % k) {
-                cout << x << endl;
-                break;
-            }
-            if (z + 1 < y) {
-                pq.emplace(presum[y] - presum[z + 1], y, z + 1);
-            }
-        }
-    }
-    
+    bool arr[] = {1, 0, 0, 1, 1};
+    bool arr2[] = {0, 1, 0, 1, 1};
+    vector<bool> v1(arr, arr + 5), v2(arr2, arr2 + 5);
+    vector<bool> v3(v1.size());
+    std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::logical_and<int>());
+    copy(v3.rbegin(), v3.rend(), ostream_iterator<bool>(cout, " "));
+
+    int a[10] = {0};
+    auto b = a;
+
+    auto f = [](auto x, auto y) { return x + y; };
+
+    cout << typeid(f).name() << endl;
+
     return 0;
 }
