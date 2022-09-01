@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <queue>
+#include <stack>
 
 using namespace std;
 
@@ -70,6 +72,8 @@ int main() {
     f(d);
     E e;
     f(e);
+
+    
 
     return 0;
 }

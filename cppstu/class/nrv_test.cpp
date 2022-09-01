@@ -8,8 +8,12 @@ public:
         memset(data, 0, 100 * sizeof(double));
         std::cout << "constructor" << std::endl;
     }
-    Obj(const Obj &rhs) { std::cout << "copy" << std::endl; }
-    Obj(const Obj &&rhs) { std::cout << "move" << std::endl; }
+    Obj(const Obj &rhs) {
+        std::cout << "copy" << std::endl;
+    }
+    Obj(const Obj &&rhs) {
+        std::cout << "move" << std::endl;
+    }
 
     double data[100];
 };
@@ -21,9 +25,14 @@ Obj func() {
     return std::move(*obj);
 }
 
+void f(const Obj &v);
+
 int main() {
     for (int i = 0; i < 1; ++i) {
         Obj obj = func();
     }
+
+    f(Obj());
+
     return 0;
 }
