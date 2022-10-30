@@ -1,59 +1,123 @@
-
+#include <atomic>
 #include <iostream>
+#include <stack>
+#include <string>
 #include <vector>
 using namespace std;
 
-vector<int> cor;
-vector<vector<int>> adj;
-int res = 0;
+class Obj {
+    double arr[10];
+};
 
-int dfs(int u, int p, int pcor) {
-    vector<int> chcor;
-    int ucor = pcor | (1 << cor[u]);
-    int all = 1 << cor[u];
-    for (int v : adj[u]) {
-        if (v == p)continue;
-        int c = dfs(v, u, ucor);
-        all |= c;
-        chcor.push_back(c);
-    }
-    int n = chcor.size();
-    for (int i = 0; i < n; ++i) {
-        if (chcor[i] != 7)
-            continue;
-        int oth = ucor;
-        for (int j = 0; j < n; ++j) {
-            if (j != i) {
-                oth |= chcor[j];
-                if (oth == 7) break;
-            }
-        }
-        if (oth == 7) ++res;
-    }
-    // cout << u << " " << all << " " << pcor << endl;
-    return all;
-}
+atomic<Obj> atv;
+atomic_llong x;
 
 int main() {
-    // freopen("in", "r", stdin);
-    int n;
-    cin >> n;
-    cor.resize(n + 1);
-    adj.resize(n + 1);
-    for (int i = 1; i <= n; ++i) {
-        char c;
-        cin >> c;
-        if (c == 'r') cor[i] = 0;
-        else if (c == 'g') cor[i] = 1;
-        else cor[i] = 2;
+    string s = "(1+2)*3*(5+8)*(100/2)";
+    cout << "s = " << s << endl;
+    stack<char> ops;
+    stack<int> nums;
+    int p = 0, n = s.size();
+    while (p < n) {
+        cout << "# p = " << p << endl;
+        if (isdigit(s[p])) {
+            int x = 0;
+            while (p < n && isdigit(s[p])) {
+                x = x * 10 + s[p] - '0';
+                ++p;
+            }
+            nums.push(x);
+            cout << "# x = " << x << endl;
+            if (ops.empty())
+                continue;
+            if (ops.top() == '*' || ops.top() == '/') {
+                int a = nums.top();
+                nums.pop();
+                int b = nums.top();
+                nums.pop();
+                char op = ops.top();
+                ops.pop();
+                int c = op == '*' ? a * b : b / a;
+                nums.push(c);
+            }
+        } else {
+            cout << "# op = " << s[p] << endl;
+            if (s[p] == '(') {
+                ops.push(s[p]);
+            } else if (s[p] == ')') {
+                while (ops.top() != '(') {
+                    int a = nums.top();
+                    nums.pop();
+                    int b = nums.top();
+                    nums.pop();
+                    char op = ops.top();
+                    ops.pop();
+                    int c = op == '+' ? a + b : b - a;
+                    nums.push(c);
+                }
+                ops.pop();
+            } else if (s[p] == '+') {
+                if (!ops.empty() && ops.top() != '(') {
+                    int a = nums.top();
+                    nums.pop();
+                    int b = nums.top();
+                    nums.pop();
+                    char op = ops.top();
+                    ops.pop();
+                    int c = op == '+' ? a + b : b - a;
+                    nums.push(c);
+                } else {
+                    ops.push(s[p]);
+                }
+            } else if (s[p] == '-') {
+                if (!ops.empty() && ops.top() != '(') {
+                    int a = nums.top();
+                    nums.pop();
+                    int b = nums.top();
+                    nums.pop();
+                    char op = ops.top();
+                    ops.pop();
+                    int c = op == '+' ? a + b : b - a;
+                    nums.push(c);
+                } else {
+                    ops.push(s[p]);
+                }
+            } else if (s[p] == '*') {
+                ops.push(s[p]);
+            } else if (s[p] == '/') {
+                ops.push(s[p]);
+            }
+            ++p;
+        }
     }
-    for (int i = 0; i < n - 1; ++i) {
-        int u, v;
-        cin >> u >> v;
-        adj[u].push_back(v);
-        adj[v].push_back(u);
+
+    while (!ops.empty()) {
+        int a = nums.top();
+        nums.pop();
+        int b = nums.top();
+        nums.pop();
+        char op = ops.top();
+        ops.pop();
+        int c = 0;
+        switch (op) {
+            case '+':
+                c = a + b;
+                break;
+            case '-':
+                c = b - a;
+                break;
+            case '*':
+                c = a * b;
+                break;
+            case '/':
+                c = b / a;
+                break;
+        }
+        nums.push(c);
     }
-    dfs(1, 0, 0);
-    cout << res << endl;
+    cout << s << " = " << nums.top() << endl;
+
+    cout << "done" << endl;
+
     return 0;
 }

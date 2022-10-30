@@ -4,7 +4,7 @@
 #include <string>
 #include <cstdlib>
 #include <assert.h>
-#include "zf/debug.h"
+#include "debug.h"
 using namespace zl;
 using namespace std;
 
@@ -294,6 +294,33 @@ public:
         show(root);
     }
 };
+
+// void cmd() {
+
+//     RBTree rbt;
+
+//     cout << ">>> " << endl;
+//     string s;
+//     while (cin >> s) {
+//         if (s == "q") break;
+//         int pos = s.find(' ');
+//         string op = s.substr(0, pos);
+//         // string num = to_string(s);
+//         cout << op << " " << num << endl;
+//         if (op == "+") {
+//             rbt.insert(stoi(num));
+//         } else if (op == "-") {
+//             rbt.remove(stoi(num));
+//         } else {
+//             break;
+//         }
+
+//         cout << "\n" << endl;
+//         rbt.show();
+//         cout << "\n" << endl;
+//         cout << ">>> ";
+//     }
+// }
 
 int main() {
     int N = 100;

@@ -48,15 +48,12 @@ public:
 
         SkipNode<T>* pre = &head_;
         for (int cur_level = head_.level_; cur_level >= 0; --cur_level) {
-            while (pre->next_[cur_level] && pre->next_[cur_level].data_)
+            while (pre->next_[cur_level] && pre->next_[cur_level].data_);
         }
 
         for (; head_.level_ < level; ++head_.level_) {
             head_.next_[head_.level_ + 1] = sn;
         }
-
-        
-
     }
 
 private:

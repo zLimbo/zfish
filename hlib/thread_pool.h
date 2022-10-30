@@ -115,8 +115,8 @@ public:
     }
 
     template <typename Func, typename... Args>
-    auto Run(Func&& func, Args&&... args)
-        -> std::shared_ptr<std::future<std::result_of_t<Func(Args...)>>> {
+    decltype(auto) Run(Func&& func, Args&&... args) {
+        // -> std::shared_ptr<std::future<std::result_of_t<Func(Args...)>>>
         if (!IsAvailable() || IsShutdown() || IsShutdownNow()) {
             return nullptr;
         }

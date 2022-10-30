@@ -130,7 +130,7 @@ public:
         return true;
     }
 
-    void Print() {
+    void Print() const {
         std::cout << "================================" << std::endl;
         int count = 0;
         for (Node *it = head_->nexts[0]; it != nullptr; it = it->nexts[0]) {
@@ -145,7 +145,7 @@ public:
                   << " level: " << max_level_ << std::endl;
     }
 
-    int Size() {
+    int Size() const {
         int count = 0;
         for (Node *it = head_->nexts[0]; it != nullptr; it = it->nexts[0]) {
             ++count;
@@ -154,7 +154,7 @@ public:
     }
 
 private:
-    int RandomLevel() {
+    int RandomLevel() const {
         int level = 1;
         int random = rand();
         while (random & 1) {
