@@ -3,7 +3,29 @@
 #include <stack>
 #include <string>
 #include <vector>
+#include <array>
 using namespace std;
+
+class Solution {
+public:
+    int countConsistentStrings(string allowed, vector<string>& words) {
+        array<bool, 26> chs;
+        for (char ch : allowed)
+            chs[ch - 'a'] = true;
+        int res = 0;
+        for (const string& w : words) {
+            bool ok = true;
+            for (char ch : w) {
+                if (!chs[ch - 'a']) {
+                    ok = false;
+                    break;
+                }
+            }
+            res += ok;
+        }
+        return res;
+    }
+};
 
 class Obj {
     double arr[10];
