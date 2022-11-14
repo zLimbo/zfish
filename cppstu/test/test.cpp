@@ -1,10 +1,12 @@
+#include <array>
 #include <atomic>
 #include <iostream>
 #include <stack>
 #include <string>
 #include <vector>
-#include <array>
 using namespace std;
+
+
 
 class Solution {
 public:
