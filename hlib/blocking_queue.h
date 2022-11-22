@@ -9,7 +9,8 @@
 template <typename T>
 class BlockingQueue {
 public:
-    explicit BlockingQueue(size_t max_size = std::numeric_limits<size_t>::max()) : max_size_(max_size) {}
+    explicit BlockingQueue(size_t max_size = std::numeric_limits<size_t>::max())
+        : max_size_(max_size) {}
     BlockingQueue(const BlockingQueue&) = delete;
     BlockingQueue& operator=(const BlockingQueue&) = delete;
 
@@ -30,7 +31,7 @@ public:
         return x;
     }
 
-    size_t size() {
+    size_t size() const {
         std::unique_lock<std::mutex> locker(mtx_);
         return queue_.size();
     }
@@ -38,7 +39,7 @@ public:
 private:
     size_t max_size_;
     std::queue<T> queue_;
-    std::mutex mtx_;
+    mutable std::mutex mtx_;
     std::condition_variable not_empty_;
     std::condition_variable not_full_;
 };
