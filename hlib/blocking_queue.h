@@ -9,7 +9,7 @@
 template <typename T>
 class BlockingQueue {
 public:
-    BlockingQueue(size_t max_size = std::numeric_limits<size_t>::max()) : max_size_(max_size) {}
+    explicit BlockingQueue(size_t max_size = std::numeric_limits<size_t>::max()) : max_size_(max_size) {}
     BlockingQueue(const BlockingQueue&) = delete;
     BlockingQueue& operator=(const BlockingQueue&) = delete;
 
