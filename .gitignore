@@ -3,14 +3,16 @@
 *
 !*.*
 !*/
+!.gitignore
 
+*.cache
 *.o
 *.a
 *.log
 *.pb.cc
 *.pb.h
 *.prof
-*.so*
+*.so
 *.dylib
 *.rej
 /output
@@ -46,10 +48,3 @@ CTestTestfile.cmake
 /test/recordio_ref.io
 
 *.tar.*
-*.dat
-
-!.gitignore
-!.clang-format
-!makefile
-
-core.*.*
