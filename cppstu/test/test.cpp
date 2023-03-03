@@ -1,18 +1,24 @@
-#include <benchmark/benchmark.h>
+#include <fmt/format.h>
+#include <fmt/ranges.h>
 
-static void BM_StringCreation(benchmark::State& state) {
-    for (auto _ : state)
-        std::string empty_string;
+#include <algorithm>
+#include <array>
+#include <iostream>
+#include <memory>
+#include <string>
+#include <thread>
+#include <unordered_map>
+#include <vector>
+
+int main() {
+    std::array<int, 1000> values;
+    std::fill(begin(values), end(values), 6);
+
+    fmt::println("before: {}", values);
+
+    std::sort(begin(values), end(values), [](int v1, int v2) { return v1 > v2; });
+
+    fmt::println("after: {}", values); 
+
+    return 0;
 }
-// Register the function as a benchmark
-BENCHMARK(BM_StringCreation);
-
-// Define another benchmark
-static void BM_StringCopy(benchmark::State& state) {
-    std::string x = "hello";
-    for (auto _ : state)
-        std::string copy(x);
-}
-BENCHMARK(BM_StringCopy);
-
-BENCHMARK_MAIN();
