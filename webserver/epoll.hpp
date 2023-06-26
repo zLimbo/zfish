@@ -1,11 +1,12 @@
 #ifndef EPOLL_H
 #define EPOLL_H
 
-#include <sys/socket.h>
-#include <sys/epoll.h>
 #include <arpa/inet.h>
 #include <strings.h>
+#include <sys/epoll.h>
+#include <sys/socket.h>
 #include <unistd.h>
+
 #include <cassert>
 #include <cstdio>
 #include <cstring>
@@ -51,7 +52,6 @@ public:
         bzero(&cli_addr, sizeof(cli_addr));
         int clifd = accept(srvfd_, (sockaddr *)&cli_addr, &len);
         assert(clifd >= 0);
-        
     }
 
     int SetNonblocking(int fd) {

@@ -1,7 +1,7 @@
 #include <fcntl.h>
 #include <unistd.h>
+
 #include <cstdio>
-#include <cstdlib>
 
 constexpr int kBufSize = 1024;
 
@@ -11,12 +11,12 @@ void cat(int fd) {
     while ((n = read(fd, buf, sizeof(buf))) > 0) {
         if ((n = write(1, buf, n)) < 0) {
             fprintf(stderr, "write 1 error.\n");
-            exit(-1);
+            _exit(-1);
         }
     }
     if (n < 0) {
         fprintf(stderr, "read %d error.\n", fd);
-        exit(-1);
+        _exit(-1);
     }
 }
 

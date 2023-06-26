@@ -1,15 +1,15 @@
 #ifndef ZLOG_H
 #define ZLOG_H
 
-#include <sstream>
-#include <string_view>
-#include <string>
-#include <cstdio>
-#include <chrono>
-#include <vector>
-#include <mutex>
-#include <condition_variable>
 #include <atomic>
+#include <chrono>
+#include <condition_variable>
+#include <mutex>
+#include <sstream>
+#include <string>
+#include <string_view>
+#include <vector>
+
 #include "../hlib/zfish.hpp"
 
 #define Log zlog::Stream(__FILE__, __LINE__)
@@ -23,12 +23,10 @@ public:
         auto as_time_t = std::chrono::system_clock::to_time_t(now);
         struct tm tm;
         localtime_r(&as_time_t, &tm);
-        auto ms = std::chrono::duration_cast<std::chrono::microseconds>(
-            now.time_since_epoch());
+        auto ms = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch());
         char buf[128];
-        snprintf(buf, sizeof(buf), "%04d-%02d-%02d.%02d:%02d:%02d.%03ld",
-                 tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour,
-                 tm.tm_min, tm.tm_sec, ms.count() % 1000);
+        snprintf(buf, sizeof(buf), "%04d-%02d-%02d.%02d:%02d:%02d.%03ld", tm.tm_year + 1900,
+                 tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, ms.count() % 1000);
         return buf;
     }
 };
@@ -65,16 +63,15 @@ public:
         curbuf_.reserve(kBufferSize);
         bakbuf_.reserve(kBufferSize);
 
-        th_ = new thread {
+        th_ = new std::thread {
             [this] {
                 auto ms = std::chrono::milliseconds{kMsWait};
                 while (true) {
                     std::vector<std::string> out_bufs;
                     {
                         std::unique_lock<std::mutex> locker{this->mu_};
-                        this->cond_.wait_for(locker, ms, [&bufs = this->bufs_] {
-                            return !bufs.empty();
-                        });
+                        this->cond_.wait_for(locker, ms,
+                                             [&bufs = this->bufs_] { return !bufs.empty(); });
                         if (bufs_.empty() && stop_) {
                             break;
                         }
@@ -96,7 +93,8 @@ public:
     }
 
     void Append(string msg) {
-        if (stop_) return;
+        if (stop_)
+            return;
         curbuf_.push_back(move(msg));
         if (curbuf_.size() < kBufferSize) {
             return;
